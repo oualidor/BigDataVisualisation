@@ -79,7 +79,6 @@ public class JavaFXCSVTableView extends Application {
         VBox vBox = new VBox();
         vBox.setSpacing(10);
         vBox.getChildren().add(tableView);
-
         root.getChildren().add(vBox);
 
         primaryStage.setScene(new Scene(root, 720, 250));

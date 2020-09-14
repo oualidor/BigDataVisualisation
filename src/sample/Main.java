@@ -23,10 +23,39 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("mainWindow.fxml"));
         Scene scene = new Scene(root, 1000, 600);
         final FileChooser fileChooser = new FileChooser();
-        Button btn = (Button) scene.lookup("#openDataSet");
+
+        //Graph
+        //defining the axes
+        final CategoryAxis xAxis = new CategoryAxis(); // we are gonna plot against time
+        final NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Time/s");
+        xAxis.setAnimated(false); // axis animations are removed
+        yAxis.setLabel("Value");
+        yAxis.setAnimated(false); // axis animations are removed
+
+        //creating the line chart with two axis created above
+        final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
+        lineChart.setTitle("Realtime JavaFX Charts");
+        lineChart.setAnimated(false); // disable animations
+
+
+        //defining a series to display data
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Data Series");
+
+        // add series to chart
+        lineChart.getData().add(series);
+
+        //Initilizz graphe holder
+
+
+
+        //
+
+        Button btn = (Button) root.lookup("#openDataSet");
         btn.setOnAction(event -> {
             File file = fileChooser.showOpenDialog(primaryStage);
             if (file != null) {
@@ -50,7 +79,13 @@ public class Main extends Application {
             }
         });
 
+
+
         primaryStage.setScene(scene);
+
+        Pane graphHolder = (Pane) root.lookup("#graphHolder");
+        lineChart.setPrefSize(graphHolder.getPrefWidth(),  graphHolder.getPrefHeight());
+        graphHolder.getChildren().add(lineChart);
         primaryStage.show();
     }
 
