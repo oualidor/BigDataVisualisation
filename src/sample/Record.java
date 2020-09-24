@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class Record {
     //Assume each record have 6 elements, all String
 
-    private SimpleStringProperty f1, f2, f3, f4, f5, f6, f7, f8, f9;
+    public SimpleStringProperty f1, f2, f3, f4, f5, f6, f7, f8, f9;
 
     public String getF1() {
         return f1.get();
@@ -32,15 +32,15 @@ public class Record {
     }
 
     public String getF7() {
-        return f6.get();
+        return f7.get();
     }
 
     public String getF8() {
-        return f6.get();
+        return f8.get();
     }
 
     public String getF9() {
-        return f6.get();
+        return f9.get();
     }
 
     Record(String f1, String f2, String f3, String f4,

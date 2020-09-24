@@ -59,10 +59,9 @@ public class Main extends Application {
         btn.setOnAction(event -> {
             File file = fileChooser.showOpenDialog(primaryStage);
             if (file != null) {
-                JavaFXCSVTableView dataSetpreview = new JavaFXCSVTableView(file.toString());
+                DynamicTable dataSetpreview = new DynamicTable(file.toString());
                 Stage previewStage = new Stage();
                 dataSetpreview.start(previewStage);
-
                 try {
                     BufferedReader csvReader = new BufferedReader(new FileReader(file.toString()));
                     String row;

@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -36,52 +37,26 @@ public class JavaFXCSVTableView extends Application {
 
         Group root = new Group();
 
-        TableColumn columnF1 = new TableColumn("f1");
-        columnF1.setCellValueFactory(
-                new PropertyValueFactory<>("f1"));
-
-        TableColumn columnF2 = new TableColumn("f2");
-        columnF2.setCellValueFactory(
-                new PropertyValueFactory<>("f2"));
-
-        TableColumn columnF3 = new TableColumn("f3");
-        columnF3.setCellValueFactory(
-                new PropertyValueFactory<>("f3"));
-
-        TableColumn columnF4 = new TableColumn("f4");
-        columnF4.setCellValueFactory(
-                new PropertyValueFactory<>("f4"));
-
-        TableColumn columnF5 = new TableColumn("f5");
-        columnF5.setCellValueFactory(
-                new PropertyValueFactory<>("f5"));
-
-        TableColumn columnF6 = new TableColumn("f6");
-        columnF6.setCellValueFactory(
-                new PropertyValueFactory<>("f6"));
-
-        TableColumn columnF7 = new TableColumn("f7");
-        columnF7.setCellValueFactory(
-                new PropertyValueFactory<>("f7"));
-
-        TableColumn columnF8 = new TableColumn("f8");
-        columnF8.setCellValueFactory(
-                new PropertyValueFactory<>("f8"));
-
-        TableColumn columnF9 = new TableColumn("f9");
-        columnF9.setCellValueFactory(
-                new PropertyValueFactory<>("f9"));
-
         tableView.setItems(dataList);
-        tableView.getColumns().addAll(
-                columnF1, columnF2, columnF3, columnF4, columnF5, columnF6, columnF7, columnF8, columnF9);
+
+        ArrayList<TableColumn> columnsList = new ArrayList<>();
+        int rowsNumber = 9;
+        for(int i=1; i<=rowsNumber; i++){
+            TableColumn column = new TableColumn(("f"+i));
+            column.setCellValueFactory(
+                    new PropertyValueFactory<>(("f"+i)));
+            tableView.getColumns().add(column);
+            columnsList.add(column);
+        }
+
 
         VBox vBox = new VBox();
         vBox.setSpacing(10);
         vBox.getChildren().add(tableView);
         root.getChildren().add(vBox);
 
-        primaryStage.setScene(new Scene(root, 720, 250));
+
+        primaryStage.setScene(new Scene(root, vBox.getMaxWidth(), vBox.getHeight()));
         primaryStage.show();
 
         readCSV();
@@ -106,6 +81,7 @@ public class JavaFXCSVTableView extends Application {
                 Record record = new Record(fields[0], fields[1], fields[2],
                         fields[3], fields[4], fields[5], fields[6], fields[7], fields[8]);
                 dataList.add(record);
+
 
             }
 

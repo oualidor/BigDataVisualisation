@@ -56,7 +56,7 @@
       <children>
             <Button fx:id="openDataSet" layoutX="875.0" layoutY="14.0" mnemonicParsing="false" text="Open data set" />
             <TextField layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="850.0" />
-            <Pane id="graphHolder" layoutX="14.0" layoutY="49.0" prefHeight="514.0" prefWidth="973.0" />
+            <Pane id="graphHolder" layoutX="14.0" layoutY="49.0" prefHeight="514.0" prefWidth="971.0" />
       </children>
     </AnchorPane>
   </children>
