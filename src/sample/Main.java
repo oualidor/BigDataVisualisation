@@ -18,62 +18,51 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Main extends Application {
-
+    LineChart<String, Number> lineChart;
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("mainWindow.fxml"));
-        Scene scene = new Scene(root, 1000, 600);
+        Scene scene = new Scene(root);
         final FileChooser fileChooser = new FileChooser();
 
         //Graph
+
+
         //defining the axes
         final CategoryAxis xAxis = new CategoryAxis(); // we are gonna plot against time
         final NumberAxis yAxis = new NumberAxis();
-        xAxis.setLabel("Time/s");
         xAxis.setAnimated(false); // axis animations are removed
         yAxis.setLabel("Value");
         yAxis.setAnimated(false); // axis animations are removed
 
         //creating the line chart with two axis created above
-        final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
+        lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setTitle("Realtime JavaFX Charts");
         lineChart.setAnimated(false); // disable animations
 
 
-        //defining a series to display data
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Data Series");
 
-        // add series to chart
-        lineChart.getData().add(series);
 
         //Initilizz graphe holder
 
-
-
-        //
 
         Button btn = (Button) root.lookup("#openDataSet");
         btn.setOnAction(event -> {
             File file = fileChooser.showOpenDialog(primaryStage);
             if (file != null) {
-                DynamicTable dataSetpreview = new DynamicTable(file.toString());
-                Stage previewStage = new Stage();
-                dataSetpreview.start(previewStage);
-                try {
-                    BufferedReader csvReader = new BufferedReader(new FileReader(file.toString()));
-                    String row;
-                    while ((row = csvReader.readLine()) != null) {
-                        String[] data = row.split(",");
-                    }
-                    csvReader.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                ArrayList<String> dataSetLines = Apis.fileToLines(file.getPath());
+                XYChart.Series<String, Number> points = Apis.prepareLines(dataSetLines);
+
+                //defining a series to display data
+                XYChart.Series<String, Number> series = new XYChart.Series<>();
+                series.setName("Data Series");
+
+                // add series to chart
+                lineChart.getData().add(points);
+                System.out.println(points);
 
             }
         });

@@ -1,11 +1,12 @@
 package hadoop;
 
 import java.util.*;
+
 import java.io.IOException;
+
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapred.*;
-
 
 public class ProcessUnits {
     //Mapper class
@@ -18,19 +19,19 @@ public class ProcessUnits {
         //Map function
         public void map(LongWritable key, Text value,
                         OutputCollector<Text, IntWritable> output,
+
                         Reporter reporter) throws IOException {
             String line = value.toString();
-            String lasttoken = null;
-            StringTokenizer s = new StringTokenizer(line,",");
-            String year = s.nextToken();
+            String[] lineArray = line.split(",");
 
-            while(s.hasMoreTokens()) {
-                lasttoken = s.nextToken();
+            String year = lineArray[1];
+
+            double total = 0;
+            for(int i=4; i< lineArray.length; i++){
+                total = total + Double.parseDouble(lineArray[i]);
             }
 
-
-            int avgprice = Integer.parseInt(lasttoken);
-            output.collect(new Text(year), new IntWritable(avgprice));
+            output.collect(new Text(year), new IntWritable((int) total));
         }
     }
 
@@ -54,6 +55,7 @@ public class ProcessUnits {
     //Main function
     public static void main(String args[])throws Exception {
         JobConf conf = new JobConf(ProcessUnits.class);
+
         conf.setJobName("max_eletricityunits");
         conf.setOutputKeyClass(Text.class);
         conf.setOutputValueClass(IntWritable.class);

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="850.0" prefWidth="1228.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -54,9 +54,9 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="481.0" prefWidth="822.0" VBox.vgrow="ALWAYS">
       <children>
-            <Button fx:id="openDataSet" layoutX="875.0" layoutY="14.0" mnemonicParsing="false" text="Open data set" />
-            <TextField layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="850.0" />
-            <Pane id="graphHolder" layoutX="14.0" layoutY="49.0" prefHeight="514.0" prefWidth="971.0" />
+            <Button fx:id="openDataSet" layoutX="1103.0" layoutY="14.0" mnemonicParsing="false" text="Open data set" />
+            <TextField layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="1079.0" />
+            <Pane id="graphHolder" layoutX="14.0" layoutY="49.0" prefHeight="760.0" prefWidth="1202.0" />
       </children>
     </AnchorPane>
   </children>
