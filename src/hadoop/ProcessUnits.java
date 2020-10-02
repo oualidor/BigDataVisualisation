@@ -7,7 +7,6 @@ import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapred.*;
 
 public class ProcessUnits {
-    static int a  = 12;
     //Mapper class
     public static class E_EMapper extends MapReduceBase implements
             Mapper<LongWritable ,/*Input key Type */
@@ -27,13 +26,6 @@ public class ProcessUnits {
             String dates = lineArray[0];
             String world = lineArray[index];
 
-            /*
-            double total = 0;
-            for(int i=4; i< lineArray.length; i++){
-                total = total + Double.parseDouble(lineArray[i]);
-            }
-
-             */
             try {
                 output.collect(new Text(dates), new IntWritable(Integer.valueOf(world)));
             } catch (IOException e) {
@@ -58,13 +50,9 @@ public class ProcessUnits {
         //Reduce function
         public void reduce( Text key, Iterator <IntWritable> values,
                             OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException {
-            int maxavg = 30;
-            int val = 0;
 
             while (values.hasNext()) {
-
-                    output.collect(key, new IntWritable(values.next().get()));
-
+                output.collect(key, new IntWritable(values.next().get()));
             }
         }
     }

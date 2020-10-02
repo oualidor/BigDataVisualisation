@@ -1,0 +1,33 @@
+Execution senario:
+
+1/- Loading the fxml file (interface)
+
+2/- finding the interface objects (Main.initilieComponents)
+
+3/- draw empty graph (Main.drawEmptyGraph)
+
+4/- Open data set (Main.btn.setOnAction)
+	- load files to lines (Apis.fileToLine)
+	- load countries list from file (Apis.getCountries)
+	- create ManeItem dor each country)
+	- set onlick listener for each menu item
+		-run mapreduce functions (Apis.mapReduce)
+		- wait fro mapReduce to finish
+		- draw graph (Main.drawGraph)
+
+
+Notes:
+	* Configuration is stored in Config file (should be changed from computer to the other)
+	* hadop map reduce fonctionalities are executed from the "lunch.sh" file
+
+Global information:
+
+	Langaue de programtion Java / JavafX
+	JDK 15
+	Appache hadoop 3.14
+	JetBarins IDE (student licence)
+	SceneBuilder (for creating the interface)
+	Operating system: Ubunto 
+	Hardware information: intel i3, ram 4gb
+
+
