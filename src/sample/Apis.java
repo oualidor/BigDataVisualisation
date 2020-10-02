@@ -7,11 +7,9 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reporter;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public interface Apis {
@@ -27,6 +25,7 @@ public interface Apis {
             while ((line = br.readLine()) != null) {
                 result.add(line);
             }
+            br.close();
             return result;
         }catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -37,20 +36,15 @@ public interface Apis {
         }
     }
 
-    public static XYChart.Series<String, Number> prepareLines(ArrayList<String> lines) {
-        String cvsSplitBy = ",";
+    public static XYChart.Series<String, Number> linesToPoints(ArrayList<String> lines) {
+        String SplitBy = "\t";
         int j=0;
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         for (String line: lines) {
             try {
                 if( j != 0){
-                    String[] lineArray = line.split(cvsSplitBy);
-                    double total = 0;
-                    for(int i=4; i< lineArray.length; i++){
-                        total = total + Double.parseDouble(lineArray[i]);
-                        System.out.println(lineArray[i]);
-                    }
-                    series.getData().add(new XYChart.Data<>(lineArray[1], total));
+                    String[] lineArray = line.split(SplitBy);
+                    series.getData().add(new XYChart.Data<>(lineArray[0], Double.valueOf(lineArray[1])));
                 }
             }catch (NumberFormatException e){
                 System.out.println("////////////////////////////////////////////////");
@@ -62,23 +56,54 @@ public interface Apis {
         return series;
     }
 
-    public static void getTotal(){
+    static ArrayList<String>  getCountries (String path){
+        ArrayList<String> result = new ArrayList<>();
+        BufferedReader br = null;
+
+
+        try{
+            br = new BufferedReader(new FileReader(path));
+            String line = br.readLine();
+            String[] countries = line.split(",");
+            for(int i=1; i< countries.length; i++){
+                result.add(countries[i]);
+            }
+            return result;
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return result;
+        }catch (IOException e) {
+            e.printStackTrace();
+            return result;
+        }
 
     }
 
-    public static void map(LongWritable key, Text value,
-                           OutputCollector<Text, IntWritable> output,
-                           Reporter reporter) throws IOException {
-        String line = value.toString();
-        String lasttoken = null;
-        StringTokenizer s = new StringTokenizer(line,",");
-        String year = s.nextToken();
-
-        while(s.hasMoreTokens()) {
-            lasttoken = s.nextToken();
+    static void runMapReduce(int index){
+        String[] c = {"./lunch.sh", String.valueOf(index)};
+        ProcessBuilder pb = new ProcessBuilder(c);
+        pb.redirectErrorStream(true);
+        pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+        pb.directory(new File(Config.HADOP_CLASS_LOCATION));
+        pb.environment().put("JAVA_HOME", Config.JAVA_HOME);
+        Map<String, String> env = System.getenv();
+        for (String envName : env.keySet()) {
+            pb.environment().put(envName, env.get(envName));
         }
 
-        int avgprice = Integer.parseInt(lasttoken);
-        output.collect(new Text(year), new IntWritable(avgprice));
+        Process p = null;
+        try {
+            p = pb.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line = null;
+            while ((line = reader.readLine()) != null)
+            {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }

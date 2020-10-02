@@ -1,14 +1,13 @@
 package hadoop;
 
 import java.util.*;
-
 import java.io.IOException;
-
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapred.*;
 
 public class ProcessUnits {
+    static int a  = 12;
     //Mapper class
     public static class E_EMapper extends MapReduceBase implements
             Mapper<LongWritable ,/*Input key Type */
@@ -16,23 +15,41 @@ public class ProcessUnits {
                     Text,                /*Output key Type*/
                     IntWritable>        /*Output value Type*/
     {
+
         //Map function
         public void map(LongWritable key, Text value,
                         OutputCollector<Text, IntWritable> output,
 
-                        Reporter reporter) throws IOException {
+                        Reporter reporter) {
             String line = value.toString();
             String[] lineArray = line.split(",");
 
-            String year = lineArray[1];
+            String dates = lineArray[0];
+            String world = lineArray[index];
 
+            /*
             double total = 0;
             for(int i=4; i< lineArray.length; i++){
                 total = total + Double.parseDouble(lineArray[i]);
             }
 
-            output.collect(new Text(year), new IntWritable((int) total));
+             */
+            try {
+                output.collect(new Text(dates), new IntWritable(Integer.valueOf(world)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }catch (NumberFormatException e){
+
+            }
         }
+
+        private static int index;
+        public void configure(JobConf job) {
+            index = Integer.parseInt(job.get("index"));
+        }
+
+
+
     }
 
     //Reducer class
@@ -42,12 +59,12 @@ public class ProcessUnits {
         public void reduce( Text key, Iterator <IntWritable> values,
                             OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException {
             int maxavg = 30;
-            int val = Integer.MIN_VALUE;
+            int val = 0;
 
             while (values.hasNext()) {
-                if((val = values.next().get())>maxavg) {
-                    output.collect(key, new IntWritable(val));
-                }
+
+                    output.collect(key, new IntWritable(values.next().get()));
+
             }
         }
     }
@@ -64,10 +81,13 @@ public class ProcessUnits {
         conf.setReducerClass(E_EReduce.class);
         conf.setInputFormat(TextInputFormat.class);
         conf.setOutputFormat(TextOutputFormat.class);
+        conf.set("index", args[2]);
 
         FileInputFormat.setInputPaths(conf, new Path(args[0]));
         FileOutputFormat.setOutputPath(conf, new Path(args[1]));
 
         JobClient.runJob(conf);
+
+
     }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="901.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutX="5.0" layoutY="2.0" prefHeight="35.0" prefWidth="891.0">
+         <children>
+            <Button id="openBtn" layoutX="759.0" layoutY="5.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="123.0" text="Open Data Set" />
+            <TextField layoutX="1.0" layoutY="5.0" prefHeight="26.0" prefWidth="752.0" />
+         </children>
+      </Pane>
+      <TextArea id="commandResultTA" layoutX="6.0" layoutY="44.0" prefHeight="531.0" prefWidth="882.0" />
+   </children>
+</Pane>
